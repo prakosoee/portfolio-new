@@ -1,0 +1,174 @@
+---
+import type { ProjectCategory } from '../types/portfolio';
+
+const categories: { label: string; value: ProjectCategory }[] = [
+  { label: 'Semua Kategori', value: 'All' },
+  { label: 'Full-Stack', value: 'Full-Stack' },
+  { label: 'Data & AI', value: 'Data/AI' }
+];
+---
+
+<div class="project-filter-wrapper">
+  <div class="filter-controls" role="group" aria-label="Filter kategori proyek">
+    {categories.map((cat, index) => (
+      <button
+        type="button"
+        class={`filter-btn ${index === 0 ? 'is-active' : ''}`}
+        data-filter={cat.value}
+        aria-pressed={index === 0 ? 'true' : 'false'}
+      >
+        {cat.label}
+      </button>
+    ))}
+  </div>
+
+  <div id="filter-empty-state" class="empty-state" hidden aria-live="polite">
+    <div class="empty-content">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <p class="empty-title">Tidak ada proyek yang cocok</p>
+      <p class="empty-desc">Belum ada proyek yang ditampilkan pada kategori yang dipilih.</p>
+      <button type="button" class="btn-secondary empty-reset-btn" id="reset-filter-btn">
+        Tampilkan Semua Proyek
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupProjectFilter() {
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+    const emptyState = document.getElementById('filter-empty-state');
+    const resetBtn = document.getElementById('reset-filter-btn');
+
+    if (!filterButtons.length || !projectCards.length) return;
+
+    function applyFilter(category: string) {
+      let visibleCount = 0;
+
+      filterButtons.forEach((btn) => {
+        const isActive = btn.dataset.filter === category;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      projectCards.forEach((card) => {
+        const cardCategory = card.dataset.category;
+        const shouldShow = category === 'All' || cardCategory === category;
+
+        if (shouldShow) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    }
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const category = btn.dataset.filter || 'All';
+        applyFilter(category);
+      });
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applyFilter('All');
+      });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', setupProjectFilter);
+  setupProjectFilter();
+</script>
+
+<style>
+  .project-filter-wrapper {
+    margin-bottom: var(--space-md);
+  }
+
+  .filter-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 18px;
+    height: 38px;
+    min-height: 44px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-neutral);
+    background-color: var(--color-surface);
+    color: var(--color-secondary);
+    font-size: var(--font-size-label-lg);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover {
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
+    border-color: var(--color-primary-60);
+  }
+
+  .filter-btn.is-active {
+    background-color: var(--color-on-surface);
+    color: var(--color-surface);
+    border-color: var(--color-on-surface);
+  }
+
+  .empty-state {
+    padding: var(--space-lg) var(--space-md);
+    background-color: #f8fafc;
+    border: 1px dashed var(--color-neutral);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    margin-top: var(--space-md);
+  }
+
+  .empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .empty-icon {
+    color: var(--color-text-muted);
+    margin-bottom: 4px;
+  }
+
+  .empty-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+  }
+
+  .empty-desc {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-secondary);
+    margin-bottom: 8px;
+  }
+
+  .empty-reset-btn {
+    margin-top: 4px;
+    font-size: var(--font-size-label-md);
+    height: 40px;
+  }
+</style>

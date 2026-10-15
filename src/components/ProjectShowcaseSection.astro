@@ -1,0 +1,471 @@
+---
+interface ProjectItem {
+  title: string;
+  description: string;
+  year: string;
+  link: string;
+  image: string;
+}
+
+const showcaseProjects: ProjectItem[] = [
+  {
+    title: "Sistem Pelayanan Pajak Daerah",
+    description: "Pelayanan pajak daerah terpadu dengan pelacakan posisi dokumen real-time dan integrasi NIK kependudukan.",
+    year: "2024",
+    link: "/projects/sistem-pelayanan-pajak-daerah",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=900&auto=format&fit=crop",
+  },
+  {
+    title: "Analisis Sentimen Berbasis Aspek (ABSA)",
+    description: "Pipeline NLP multi-aspek dengan fine-tuning model IndoBERT dan microservice inference FastAPI.",
+    year: "2024",
+    link: "/projects/analisis-sentimen-absa",
+    image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=900&auto=format&fit=crop",
+  },
+  {
+    title: "Sistem Pembayaran Pondok Pesantren",
+    description: "Manajemen keuangan santri, generator tagihan berkala, dan pembukuan kas berbasis transaksi ACID.",
+    year: "2023",
+    link: "/projects/sistem-pembayaran-pesantren",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=900&auto=format&fit=crop",
+  },
+];
+---
+
+<section id="projects" class="section section-showcase" aria-labelledby="showcase-heading">
+  <div class="container">
+    <div class="showcase-wrapper" id="showcase-container">
+      <!-- Section Header -->
+      <div class="showcase-header">
+        <h2 id="showcase-heading" class="showcase-title">Karya & Proyek Pilihan</h2>
+        <p class="showcase-description">
+          Studi kasus rekayasa sistem produksi, arsitektur basis data relasional, dan integrasi pipeline AI.
+        </p>
+      </div>
+
+      <!-- Floating Cursor Preview Box (Desktop) -->
+      <div class="floating-preview" id="floating-preview" aria-hidden="true">
+        <div class="preview-media-card">
+          {showcaseProjects.map((p, index) => (
+            <img
+              src={p.image}
+              alt={p.title}
+              class="preview-img"
+              data-index={index}
+              loading="lazy"
+            />
+          ))}
+          <!-- Subtle lighting vignette -->
+          <div class="preview-gradient-overlay"></div>
+        </div>
+      </div>
+
+      <!-- Projects Showcase List -->
+      <div class="showcase-list">
+        {showcaseProjects.map((project, index) => (
+          <a
+            href={project.link}
+            class="showcase-row group"
+            data-index={index}
+          >
+            <!-- Hover highlight pill -->
+            <div class="row-hover-pill"></div>
+
+            <!-- Mobile inline thumbnail (screens < 768px) -->
+            <div class="mobile-media-preview">
+              <img
+                src={project.image}
+                alt={project.title}
+                class="mobile-img"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="row-content">
+              <div class="row-main">
+                <div class="row-title-wrap">
+                  <h3 class="row-title">
+                    <span class="title-text">{project.title}</span>
+                    <span class="title-underline"></span>
+                  </h3>
+                  <!-- Modern Diagonal Arrow ↗ -->
+                  <svg class="row-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </div>
+                <p class="row-desc">{project.description}</p>
+              </div>
+
+              <span class="row-year">{project.year}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-showcase {
+    padding-top: clamp(4rem, 8vw, 6.5rem);
+    padding-bottom: clamp(4rem, 8vw, 6.5rem);
+    border-bottom: 1px dashed var(--color-border-dashed, #cbd5e1);
+    position: relative;
+    background-color: var(--color-surface);
+  }
+
+  .showcase-wrapper {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+  }
+
+  /* Section Header */
+  .showcase-header {
+    max-width: 768px;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .showcase-title {
+    font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--color-on-surface, #111827);
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+
+  .showcase-description {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--color-secondary, #4b5563);
+    line-height: 1.6;
+  }
+
+  /* Floating cursor preview box (Desktop Only) */
+  .floating-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    border-radius: 20px;
+    box-shadow:
+      0 28px 65px -12px rgba(0, 0, 0, 0.4),
+      0 16px 32px -16px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    background-color: #09090b;
+  }
+
+  .preview-media-card {
+    position: relative;
+    width: 330px;
+    height: 210px;
+    background-color: #09090b;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .preview-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.08);
+    filter: blur(8px);
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out, filter 0.45s ease-out;
+  }
+
+  .preview-img.is-active {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+
+  .preview-gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(9, 9, 11, 0.4) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* List & Divider Lines */
+  .showcase-list {
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+    border-bottom: 1px dashed var(--color-border-dashed, #cbd5e1);
+  }
+
+  .showcase-row {
+    display: block;
+    position: relative;
+    padding: clamp(1.75rem, 3.5vw, 2.5rem) 0;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px dashed var(--color-border-dashed, #cbd5e1);
+    transition: color 0.2s ease;
+    min-height: 52px;
+  }
+
+  .showcase-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Hover background pill */
+  .row-hover-pill {
+    position: absolute;
+    inset: 0.25rem -1.25rem;
+    padding: 0 1.25rem;
+    background-color: rgba(241, 245, 249, 0.7);
+    border-radius: 14px;
+    opacity: 0;
+    transform: scale(0.985);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .showcase-row:hover .row-hover-pill {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Row content flex layout */
+  .row-content {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .row-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-title-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .row-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    font-weight: 600;
+    color: var(--color-on-surface);
+    margin: 0;
+    position: relative;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  .title-text {
+    position: relative;
+  }
+
+  /* Underline slide */
+  .title-underline {
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 1.5px;
+    width: 0;
+    background-color: var(--color-on-surface);
+    transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .showcase-row:hover .title-underline {
+    width: 100%;
+  }
+
+  /* Diagonal arrow */
+  .row-arrow {
+    color: var(--color-secondary);
+    opacity: 0;
+    transform: translate(-6px, 6px);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .showcase-row:hover .row-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: var(--color-on-surface);
+  }
+
+  /* Description */
+  .row-desc {
+    margin-top: 0.5rem;
+    font-size: clamp(0.875rem, 1.6vw, 0.965rem);
+    color: var(--color-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+    max-width: 580px;
+    transition: color 0.2s ease;
+  }
+
+  .showcase-row:hover .row-desc {
+    color: #334155;
+  }
+
+  /* Year */
+  .row-year {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    color: #94a3b8;
+    padding-top: 0.25rem;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    transition: color 0.2s ease;
+  }
+
+  .showcase-row:hover .row-year {
+    color: var(--color-secondary);
+  }
+
+  /* Mobile Inline Media (< 768px) */
+  .mobile-media-preview {
+    display: none;
+    width: 100%;
+    height: 190px;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--color-neutral);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 768px) {
+    .floating-preview {
+      display: none !important;
+    }
+
+    .mobile-media-preview {
+      display: block;
+    }
+
+    .row-hover-pill {
+      display: none;
+    }
+
+    .title-underline {
+      display: none;
+    }
+
+    .row-arrow {
+      opacity: 1;
+      transform: none;
+      color: var(--color-primary);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .mobile-media-preview {
+      height: 155px;
+    }
+
+    .row-content {
+      flex-direction: column-reverse;
+      gap: 0.25rem;
+    }
+
+    .row-year {
+      align-self: flex-start;
+      margin-bottom: 0.25rem;
+      font-size: 0.8125rem;
+    }
+  }
+</style>
+
+<script>
+  function setupShowcasePreview() {
+    // Only initialize mouse tracking on devices with hover and adequate width
+    if (window.matchMedia('(hover: none) or (max-width: 768px)').matches) {
+      return;
+    }
+
+    const container = document.getElementById('showcase-container');
+    const preview = document.getElementById('floating-preview');
+    if (!container || !preview) return;
+
+    const images = preview.querySelectorAll<HTMLImageElement>('.preview-img');
+    const rows = container.querySelectorAll<HTMLAnchorElement>('.showcase-row');
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let smoothX = 0;
+    let smoothY = 0;
+    let isVisible = false;
+    let animationId: number | null = null;
+
+    function lerp(start: number, end: number, factor: number) {
+      return start + (end - start) * factor;
+    }
+
+    function animate() {
+      smoothX = lerp(smoothX, mouseX, 0.14);
+      smoothY = lerp(smoothY, mouseY, 0.14);
+
+      if (preview) {
+        preview.style.transform = `translate3d(${smoothX + 24}px, ${smoothY - 105}px, 0)`;
+      }
+      animationId = requestAnimationFrame(animate);
+    }
+
+    animationId = requestAnimationFrame(animate);
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    rows.forEach((row) => {
+      const idx = row.getAttribute('data-index');
+
+      row.addEventListener('mouseenter', () => {
+        isVisible = true;
+        preview.style.opacity = '1';
+        preview.style.transform = `translate3d(${mouseX + 24}px, ${mouseY - 105}px, 0) scale(1)`;
+
+        images.forEach((img) => {
+          if (img.getAttribute('data-index') === idx) {
+            img.classList.add('is-active');
+          } else {
+            img.classList.remove('is-active');
+          }
+        });
+      });
+
+      row.addEventListener('mouseleave', () => {
+        images.forEach((img) => img.classList.remove('is-active'));
+      });
+    });
+
+    container.addEventListener('mouseleave', () => {
+      isVisible = false;
+      preview.style.opacity = '0';
+    });
+  }
+
+  // Setup on initial load and Astro view transitions
+  setupShowcasePreview();
+  document.addEventListener('astro:page-load', setupShowcasePreview);
+</script>

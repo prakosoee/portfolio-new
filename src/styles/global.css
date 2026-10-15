@@ -1,0 +1,282 @@
+@import "tailwindcss";
+@source "../**/*.{astro,html,js,jsx,ts,tsx}";
+@import './design-tokens.css';
+@import './timeline.css';
+@import './release-timeline.css';
+
+/* Modern CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  font-size: var(--font-size-body-md);
+  color: var(--color-on-surface);
+  background-color: #fafbfc;
+  overflow-x: hidden;
+}
+
+/* Accessibility Focus States */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Skip link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--color-on-surface);
+  color: var(--color-surface);
+  padding: 0.75rem 1.25rem;
+  z-index: 1000;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-label-lg);
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-on-surface);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--font-size-headline-lg);
+  letter-spacing: var(--letter-spacing-headline-lg);
+}
+
+h2 {
+  font-size: var(--font-size-headline-md);
+  letter-spacing: var(--letter-spacing-headline-md);
+}
+
+h3 {
+  font-size: var(--font-size-headline-sm);
+}
+
+p {
+  color: var(--color-secondary);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--content-padding);
+  padding-right: var(--content-padding);
+}
+
+/* Components from design.md */
+
+/* Primary Button: dark surface with light text, pill rounded, 48px height */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  background-color: var(--color-on-surface);
+  color: var(--color-surface);
+  font-size: var(--font-size-label-lg);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  padding: 0 var(--space-md);
+  height: 48px;
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background-color: #27303f;
+  text-decoration: none;
+  color: var(--color-surface);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Secondary Button: light surface with dark text, pill rounded, 48px height */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-size: var(--font-size-label-lg);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  padding: 0 var(--space-md);
+  height: 48px;
+  min-height: 44px;
+  min-width: 44px;
+  border: 1px solid var(--color-neutral);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-tertiary);
+  border-color: var(--color-primary-60);
+  text-decoration: none;
+  color: var(--color-on-surface);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Tertiary Button: soft blue tint, 29px height, sm rounded */
+.btn-tertiary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  background-color: var(--color-tertiary);
+  color: var(--color-primary);
+  font-size: var(--font-size-label-md);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+  min-height: 36px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-tertiary:hover {
+  background-color: #dbeafe;
+  text-decoration: none;
+}
+
+/* Card: white surface, rounded xl (23px), padding 28px, subtle border and depth */
+.card {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md);
+  border: 1px solid var(--color-neutral);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Chip: tertiary pale blue fill, slate text, rounded full, label-md */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-tertiary);
+  color: var(--color-secondary);
+  font-size: var(--font-size-label-md);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  line-height: 16px;
+}
+
+.chip-mono {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-code-sm);
+}
+
+/* Inputs from design.md: pale blue tertiary surface, 56px height, rounded lg (12px) */
+.input {
+  width: 100%;
+  background-color: var(--color-tertiary);
+  color: var(--color-on-surface);
+  border-radius: var(--radius-lg);
+  padding: 0 16px;
+  height: 56px;
+  min-height: 44px;
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-body-md);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.input:focus {
+  background-color: #ffffff;
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+textarea.input {
+  height: auto;
+  min-height: 120px;
+  padding: 16px;
+  resize: vertical;
+}
+
+/* Section Rhythm */
+.section {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  position: relative;
+}
+
+.section-hero {
+  padding-top: clamp(40px, 8vw, 84px);
+  padding-bottom: var(--space-lg);
+}
+
+/* Central Framed Page Container with Dotted Borders on Left and Right */
+.site-frame {
+  width: 100%;
+  max-width: var(--container-max-width, 1080px);
+  margin-left: auto;
+  margin-right: auto;
+  border-left: 1px dotted var(--color-border-dotted, #94a3b8);
+  border-right: 1px dotted var(--color-border-dotted, #94a3b8);
+  position: relative;
+  background-color: var(--color-surface, #ffffff);
+}
+
+/* Responsive Utilities */
+@media (max-width: 640px) {
+  .card {
+    padding: 20px;
+  }
+}

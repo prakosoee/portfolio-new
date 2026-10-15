@@ -1,0 +1,200 @@
+---
+import type { Project } from '../types/portfolio';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card project-card" data-category={project.category}>
+  <div class="project-header">
+    <div class="project-meta">
+      <span class="chip">{project.category}</span>
+      <span class="project-period">{project.period}</span>
+    </div>
+    <h3 class="project-title">
+      <a href={`/projects/${project.slug}`} class="project-title-link">
+        {project.title}
+      </a>
+    </h3>
+    <p class="project-role">{project.role}</p>
+  </div>
+
+  <p class="project-summary">
+    {project.summary}
+  </p>
+
+  <div class="project-tech-stack">
+    <span class="tech-label">Teknologi:</span>
+    <div class="tech-tags">
+      {project.technologies.slice(0, 5).map((tech) => (
+        <span class="chip chip-mono">{tech}</span>
+      ))}
+      {project.technologies.length > 5 && (
+        <span class="chip chip-mono">+{project.technologies.length - 5} lainnya</span>
+      )}
+    </div>
+  </div>
+
+  <div class="project-footer">
+    <a href={`/projects/${project.slug}`} class="btn-primary project-cta">
+      Lihat Studi Kasus
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+
+    {project.isPublicRepo && project.repositoryUrl && (
+      <a 
+        href={project.repositoryUrl} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-secondary project-secondary-cta"
+        aria-label={`Buka repositori GitHub untuk ${project.title}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+        <span>Repositori</span>
+      </a>
+    )}
+
+    {!project.isPublicRepo && project.accessNote && (
+      <span class="access-note" title={project.accessNote}>
+        Sistem internal instansi
+      </span>
+    )}
+  </div>
+</article>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--color-primary-60);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  }
+
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+  }
+
+  .project-period {
+    font-size: var(--font-size-label-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .project-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 4px;
+  }
+
+  .project-title-link {
+    color: var(--color-on-surface);
+    text-decoration: none;
+  }
+
+  .project-title-link:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .project-role {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .project-summary {
+    font-size: var(--font-size-body-md);
+    color: var(--color-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+    flex-grow: 1;
+  }
+
+  .project-tech-stack {
+    margin-bottom: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-neutral);
+  }
+
+  .tech-label {
+    display: block;
+    font-size: var(--font-size-label-xs, 11px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .project-cta {
+    font-size: var(--font-size-label-md);
+    height: 42px;
+    padding: 0 16px;
+  }
+
+  .project-secondary-cta {
+    font-size: var(--font-size-label-md);
+    height: 42px;
+    padding: 0 14px;
+    gap: 6px;
+  }
+
+  .access-note {
+    font-size: var(--font-size-label-sm);
+    color: var(--color-text-muted);
+    background-color: var(--color-tertiary);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (max-width: 480px) {
+    .project-footer {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .project-cta, .project-secondary-cta {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

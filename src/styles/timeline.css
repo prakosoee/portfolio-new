@@ -1,0 +1,339 @@
+/* Aceternity UI Timeline Component Styles */
+.timeline-section-root {
+  width: 100%;
+  background-color: var(--color-surface, #ffffff);
+  font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+  border-bottom: 1px solid var(--color-neutral, #e5e7eb);
+  position: relative;
+}
+
+.timeline-container-inner {
+  max-width: var(--container-max-width, 1080px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--content-padding, clamp(16px, 4vw, 28px));
+  padding-right: var(--content-padding, clamp(16px, 4vw, 28px));
+}
+
+.timeline-header-block {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  max-width: 720px;
+}
+
+.timeline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-tertiary, #eff6ff);
+  color: var(--color-primary, #2563eb);
+  font-size: var(--font-size-label-md, 12px);
+  font-weight: 600;
+  border-radius: var(--radius-full, 9999px);
+  padding: 4px 14px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  margin-bottom: 12px;
+}
+
+.timeline-main-heading {
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--color-on-surface, #111827);
+  letter-spacing: -0.025em;
+  margin: 0 0 12px 0;
+}
+
+.timeline-main-subheading {
+  font-size: var(--font-size-body-md, 16px);
+  color: var(--color-secondary, #4a5565);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Timeline entries body & rail */
+.timeline-track-wrap {
+  position: relative;
+  padding-bottom: 3rem;
+}
+
+.timeline-entry-row {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .timeline-entry-row {
+    flex-direction: row;
+    gap: 2.5rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* Sticky Column */
+.timeline-sticky-anchor {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 30;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .timeline-sticky-anchor {
+    position: sticky;
+    top: 9rem;
+    align-self: flex-start;
+    width: 240px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+}
+
+.timeline-dot-outer {
+  position: absolute;
+  left: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-surface, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-neutral, #e5e7eb);
+  z-index: 35;
+}
+
+@media (min-width: 768px) {
+  .timeline-dot-outer {
+    left: 8px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.timeline-dot-inner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--color-neutral, #e5e7eb);
+  border: 2px solid var(--color-surface, #ffffff);
+  box-shadow: 0 0 0 1px #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+.timeline-year-text-desktop {
+  display: none;
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  color: var(--color-on-surface, #111827);
+  padding-left: 3.75rem;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .timeline-year-text-desktop {
+    display: block;
+  }
+}
+
+.timeline-year-text-mobile {
+  display: block;
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #2563eb);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .timeline-year-text-mobile {
+    display: none;
+  }
+}
+
+/* Content Column */
+.timeline-content-panel {
+  padding-left: 3.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .timeline-content-panel {
+    padding-left: 0;
+  }
+}
+
+/* Vertical Progress Rail & Animated Beam */
+.timeline-vertical-rail {
+  position: absolute;
+  left: 23px;
+  top: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent 0%, #e2e8f0 10%, #cbd5e1 90%, transparent 100%);
+  overflow: hidden;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .timeline-vertical-rail {
+    left: 27px;
+  }
+}
+
+.timeline-vertical-beam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #2563eb, #6366f1);
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.85);
+  border-radius: 9999px;
+}
+
+/* Experience Card Inside Timeline */
+.timeline-card {
+  background-color: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-neutral, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.07);
+}
+
+.timeline-card-role {
+  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  font-weight: 700;
+  color: var(--color-on-surface, #111827);
+  letter-spacing: -0.015em;
+  margin: 0 0 4px 0;
+}
+
+.timeline-card-org {
+  font-size: var(--font-size-body-sm, 14px);
+  font-weight: 600;
+  color: var(--color-primary, #2563eb);
+  margin: 0 0 14px 0;
+}
+
+.timeline-card-summary {
+  font-size: var(--font-size-body-md, 16px);
+  color: var(--color-secondary, #4a5565);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-contributions-block {
+  margin-bottom: 1.25rem;
+}
+
+.timeline-contributions-label {
+  display: block;
+  font-size: var(--font-size-label-sm, 11px);
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-secondary, #4a5565);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timeline-contributions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.timeline-contributions-list li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: var(--font-size-body-sm, 14px);
+  color: var(--color-on-surface, #111827);
+  line-height: 1.55;
+}
+
+.timeline-contributions-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  color: var(--color-primary, #2563eb);
+  font-weight: bold;
+}
+
+.timeline-tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-tech-chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-tertiary, #eff6ff);
+  color: var(--color-secondary, #4a5565);
+  font-size: var(--font-size-code-sm, 12px);
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+}
+
+.timeline-visuals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 540px) {
+  .timeline-visuals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.timeline-visual-wrap {
+  height: 160px;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  background-color: var(--color-neutral, #e5e7eb);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 640px) {
+  .timeline-visual-wrap {
+    height: 190px;
+  }
+}
+
+.timeline-visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.timeline-visual-wrap:hover .timeline-visual-img {
+  transform: scale(1.05);
+}

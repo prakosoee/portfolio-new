@@ -1,0 +1,21 @@
+---
+import { ExperienceTimeline } from "./ui/experience-timeline";
+import "../styles/release-timeline.css";
+---
+
+<section
+  id="experience"
+  class="section-experience-wrapper"
+  aria-labelledby="experience-heading"
+>
+  <ExperienceTimeline client:load />
+</section>
+
+<style>
+  .section-experience-wrapper {
+    width: 100%;
+    background-color: var(--color-surface, #ffffff);
+    border-bottom: 1px dashed var(--color-border-dashed, #cbd5e1);
+    position: relative;
+  }
+</style>

@@ -1,0 +1,222 @@
+---
+import { socialLinks } from "../data/profile";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="footer-title">Muhammad Elang Prakoso</a>
+        <p class="footer-desc">
+          Software Engineer berfokus pada arsitektur sistem web, keandalan basis
+          data, dan rekayasa data/AI.
+        </p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Navigasi Footer">
+        <div class="footer-links-group">
+          <span class="footer-group-title">Navigasi Halaman</span>
+          <ul class="footer-links-list">
+            <li><a href="/#projects">Daftar Proyek</a></li>
+            <li><a href="/#about">Tentang & Prinsip Kerja</a></li>
+            <li><a href="/#skills">Keahlian Teknis</a></li>
+            <li><a href="/#experience">Pengalaman</a></li>
+            <li><a href="/#contact">Kontak</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-group">
+          <span class="footer-group-title">Tautan Profesional</span>
+          <ul class="footer-links-list">
+            {
+              socialLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.url}
+                    target={link.url.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.url.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                  >
+                    {link.platform}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; {currentYear} Muhammad Elang Prakoso. Hak cipta dilindungi. Dibangun
+        dengan Astro dan TypeScript.
+      </p>
+      <a
+        href="#top"
+        class="back-to-top"
+        aria-label="Kembali ke bagian atas halaman"
+      >
+        <span>Kembali ke Atas</span>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: #fafbfc;
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-md);
+    margin-top: auto;
+  }
+
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    border-left: 1px dotted var(--color-border-dotted, #94a3b8);
+    border-right: 1px dotted var(--color-border-dotted, #94a3b8);
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    max-width: 400px;
+  }
+
+  .footer-title {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-on-surface);
+    margin-bottom: 8px;
+    text-decoration: none;
+  }
+
+  .footer-desc {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-secondary);
+    line-height: 1.6;
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+  }
+
+  .footer-links-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-group-title {
+    font-size: var(--font-size-label-md);
+    font-weight: 600;
+    color: var(--color-on-surface);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-links-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-links-list a {
+    color: var(--color-secondary);
+    font-size: var(--font-size-body-sm);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-links-list a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+    padding-top: var(--space-md);
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .footer-copy {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-muted);
+  }
+
+  .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-label-md);
+    font-weight: 500;
+    color: var(--color-secondary);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-neutral);
+    background-color: var(--color-surface);
+    min-height: 36px;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .back-to-top:hover {
+    background-color: var(--color-tertiary);
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .footer-top {
+      flex-direction: column;
+    }
+
+    .footer-nav {
+      gap: var(--space-md);
+      width: 100%;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

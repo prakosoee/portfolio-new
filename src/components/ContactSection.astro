@@ -1,0 +1,415 @@
+---
+import { personalProfile, socialLinks } from '../data/profile';
+---
+
+<section id="contact" class="section section-contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <h2 id="contact-heading" class="contact-heading">Mari Berdiskusi & Berkolaborasi</h2>
+        <p class="contact-intro">
+          Tertarik mendiskusikan peluang kerja, proyek freelance, atau sekadar bertukar pikiran seputar arsitektur software dan machine learning? Silakan hubungi saya melalui form atau kanal kontak berikut.
+        </p>
+
+        <div class="status-banner">
+          <span class="status-indicator"></span>
+          <span class="status-text">{personalProfile.availability}</span>
+        </div>
+
+        <div class="direct-channels">
+          <div class="channel-item">
+            <span class="channel-label">Alamat Email</span>
+            <a href="mailto:elang.prakoso@example.com" class="channel-value">
+              elang.prakoso@example.com
+            </a>
+          </div>
+
+          <div class="channel-item">
+            <span class="channel-label">Lokasi Domisili</span>
+            <span class="channel-value channel-static">{personalProfile.location}</span>
+          </div>
+
+          <div class="channel-item">
+            <span class="channel-label">Profil Profesional</span>
+            <div class="social-chips">
+              {socialLinks.map((link) => (
+                <a 
+                  href={link.url} 
+                  target={link.url.startsWith('http') ? '_blank' : undefined} 
+                  rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  class="btn-tertiary"
+                  aria-label={link.label}
+                >
+                  {link.platform}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Contact Form -->
+      <div class="card contact-form-card">
+        <form id="contact-form" class="contact-form" novalidate>
+          <!-- Honeypot Field for Spam Protection -->
+          <div class="hp-field" aria-hidden="true" style="display: none;">
+            <label for="contact-website-field">Jangan isi bidang ini</label>
+            <input type="text" id="contact-website-field" name="website_hp" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-group">
+            <label for="contact-name" class="form-label">
+              Nama Lengkap <span class="required-mark" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="contact-name" 
+              name="name" 
+              class="input" 
+              placeholder="Masukkan nama Anda" 
+              required
+              aria-required="true"
+            />
+            <span class="field-error" id="name-error" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-email" class="form-label">
+              Alamat Email <span class="required-mark" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="contact-email" 
+              name="email" 
+              class="input" 
+              placeholder="nama@perusahaan.com" 
+              required
+              aria-required="true"
+            />
+            <span class="field-error" id="email-error" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject" class="form-label">
+              Subjek (Opsional)
+            </label>
+            <input 
+              type="text" 
+              id="contact-subject" 
+              name="subject" 
+              class="input" 
+              placeholder="Diskusi proyek / Tawaran kerja" 
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message" class="form-label">
+              Pesan <span class="required-mark" aria-hidden="true">*</span>
+            </label>
+            <textarea 
+              id="contact-message" 
+              name="message" 
+              class="input" 
+              rows="4" 
+              placeholder="Tuliskan kebutuhan atau pesan Anda secara ringkas..." 
+              required
+              aria-required="true"
+            ></textarea>
+            <span class="field-error" id="message-error" aria-live="polite"></span>
+          </div>
+
+          <!-- Live Form Status Banner -->
+          <div id="form-status-box" class="form-status-box" hidden aria-live="polite"></div>
+
+          <button type="submit" id="submit-btn" class="btn-primary form-submit-btn">
+            <span class="btn-text">Kirim Pesan</span>
+            <span class="btn-spinner" hidden aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon">
+                <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+              </svg>
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    const nameInput = document.getElementById('contact-name') as HTMLInputElement;
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
+    const hpInput = document.getElementById('contact-website-field') as HTMLInputElement;
+
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const messageError = document.getElementById('message-error');
+    const statusBox = document.getElementById('form-status-box');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+
+    function clearErrors() {
+      if (nameError) nameError.textContent = '';
+      if (emailError) emailError.textContent = '';
+      if (messageError) messageError.textContent = '';
+      if (statusBox) {
+        statusBox.hidden = true;
+        statusBox.textContent = '';
+        statusBox.className = 'form-status-box';
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      // Check spam honeypot
+      if (hpInput && hpInput.value.trim() !== '') {
+        // Silently treat as spam
+        return;
+      }
+
+      let isValid = true;
+
+      // Validate Name
+      if (!nameInput.value.trim()) {
+        if (nameError) nameError.textContent = 'Nama wajib diisi.';
+        nameInput.focus();
+        isValid = false;
+      }
+
+      // Validate Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailInput.value.trim()) {
+        if (emailError) emailError.textContent = 'Email wajib diisi.';
+        if (isValid) emailInput.focus();
+        isValid = false;
+      } else if (!emailRegex.test(emailInput.value.trim())) {
+        if (emailError) emailError.textContent = 'Format alamat email tidak valid.';
+        if (isValid) emailInput.focus();
+        isValid = false;
+      }
+
+      // Validate Message
+      if (!messageInput.value.trim()) {
+        if (messageError) messageError.textContent = 'Pesan wajib diisi.';
+        if (isValid) messageInput.focus();
+        isValid = false;
+      } else if (messageInput.value.trim().length < 10) {
+        if (messageError) messageError.textContent = 'Pesan minimal terdiri dari 10 karakter.';
+        if (isValid) messageInput.focus();
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Loading State
+      submitBtn.disabled = true;
+      if (btnText) btnText.textContent = 'Mengirim...';
+      if (btnSpinner) (btnSpinner as HTMLElement).hidden = false;
+
+      // Simulating secure submission with feedback
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        if (btnText) btnText.textContent = 'Kirim Pesan';
+        if (btnSpinner) (btnSpinner as HTMLElement).hidden = true;
+
+        if (statusBox) {
+          statusBox.hidden = false;
+          statusBox.classList.add('status-success');
+          statusBox.textContent = 'Pesan Anda berhasil dikirim. Terima kasih, saya akan segera merespons ke email Anda.';
+        }
+
+        form.reset();
+      }, 700);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupContactForm);
+  setupContactForm();
+</script>
+
+<style>
+  .section-contact {
+    background-color: var(--color-surface, #ffffff);
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .contact-heading {
+    font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-on-surface, #111827);
+    margin-bottom: 12px;
+  }
+
+  .contact-intro {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--color-secondary, #4b5563);
+    line-height: 1.6;
+    margin-bottom: var(--space-xs);
+  }
+
+  .status-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background-color: var(--color-surface);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: var(--radius-full);
+    width: fit-content;
+  }
+
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-success);
+    border-radius: 50%;
+  }
+
+  .status-text {
+    font-size: var(--font-size-label-md);
+    color: var(--color-on-surface);
+    font-weight: 500;
+  }
+
+  .direct-channels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+    padding-top: var(--space-md);
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+  }
+
+  .channel-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .channel-label {
+    font-size: var(--font-size-label-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+
+  .channel-value {
+    font-size: var(--font-size-body-md);
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .channel-value:hover {
+    text-decoration: underline;
+  }
+
+  .channel-static {
+    color: var(--color-on-surface);
+  }
+
+  .social-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  /* Contact Form */
+  .contact-form-card {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: var(--font-size-label-md);
+    font-weight: 500;
+    color: var(--color-on-surface);
+  }
+
+  .required-mark {
+    color: var(--color-error);
+  }
+
+  .field-error {
+    font-size: var(--font-size-label-sm);
+    color: var(--color-error);
+    min-height: 16px;
+  }
+
+  .form-status-box {
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-body-sm);
+  }
+
+  .form-status-box.status-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .form-status-box.status-error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  .form-submit-btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .spin-icon {
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>

@@ -1,0 +1,194 @@
+---
+import { educationList } from "../data/profile";
+---
+
+<section
+  id="education"
+  class="section section-education"
+  aria-labelledby="education-heading"
+>
+  <div class="container education-container">
+    <div class="section-header">
+      <h2 id="education-heading" class="section-title">Pendidikan Formal</h2>
+      <p class="section-description">
+        Fondasi keilmuan dalam rekayasa perangkat lunak, arsitektur basis data
+        relasional, dan pemrosesan bahasa alami (NLP).
+      </p>
+    </div>
+
+    <div class="education-cards-grid">
+      {
+        educationList.map((edu) => (
+          <div class="card education-card">
+            <div class="education-top-bar">
+              <div>
+                <h3 class="education-inst">{edu.institution}</h3>
+                <p class="education-degree">
+                  <strong>{edu.qualification}</strong>, {edu.fieldOfStudy}
+                </p>
+              </div>
+              <span class="chip chip-mono education-period">{edu.period}</span>
+            </div>
+
+            {edu.achievements && edu.achievements.length > 0 && (
+              <div class="education-details">
+                <span class="details-label">Fokus Kajian & Riset:</span>
+                <ul class="details-list">
+                  {edu.achievements.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-education {
+    padding-top: clamp(3.5rem, 7vw, 5.5rem);
+    padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+    border-bottom: 1px dashed var(--color-border-dashed, #cbd5e1);
+    background-color: var(--color-surface);
+  }
+
+  .education-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Section Header */
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    max-width: 768px;
+  }
+
+  .section-title {
+    font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-on-surface, #111827);
+    margin-bottom: 12px;
+  }
+
+  .section-description {
+    font-size: clamp(14px, 2vw, 17px);
+    color: var(--color-secondary, #4b5563);
+    line-height: 1.6;
+  }
+
+  .education-cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: var(--space-4);
+  }
+
+  .education-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-neutral);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .education-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.07);
+  }
+
+  .education-top-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .education-inst {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 600;
+    color: var(--color-on-surface);
+    margin: 0 0 0.35rem 0;
+    letter-spacing: -0.015em;
+  }
+
+  .education-degree {
+    font-size: var(--font-size-body-sm);
+    color: var(--color-secondary);
+    margin: 0;
+  }
+
+  .education-degree strong {
+    color: var(--color-primary);
+  }
+
+  .education-period {
+    font-size: var(--font-size-label-sm);
+    flex-shrink: 0;
+  }
+
+  .education-details {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--color-border-dashed, #cbd5e1);
+  }
+
+  .details-label {
+    display: block;
+    font-size: var(--font-size-label-sm);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-secondary);
+    margin-bottom: var(--space-2);
+  }
+
+  .details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .details-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: var(--font-size-body-sm);
+    color: var(--color-on-surface);
+    line-height: 1.55;
+  }
+
+  .details-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+
+  @media (max-width: 640px) {
+    .education-top-bar {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .education-period {
+      align-self: flex-start;
+    }
+  }
+</style>
