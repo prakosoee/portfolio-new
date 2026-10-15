@@ -4,7 +4,7 @@ import { projects } from '../data/projects';
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site
     ? site.toString().replace(/\/$/, '')
-    : 'https://elangprakoso.my.id';
+    : 'https://www.elangprakoso.my.id';
   const currentDate = new Date().toISOString().split('T')[0];
 
   const urls = [

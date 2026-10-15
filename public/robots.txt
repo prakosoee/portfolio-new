@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Host & Sitemap
-Sitemap: https://elangprakoso.my.id/sitemap.xml
+Sitemap: https://www.elangprakoso.my.id/sitemap.xml
