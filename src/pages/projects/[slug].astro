@@ -28,6 +28,17 @@ const { project, prevProject, nextProject } = Astro.props;
   title={`${project.title} - Studi Kasus`} 
   description={project.summary}
   currentPath={`/projects/${project.slug}`}
+  type="article"
+  keywords={[
+    project.title,
+    project.category,
+    ...project.technologies,
+    "Studi Kasus",
+    "Software Engineering",
+    "Muhammad Elang Prakoso"
+  ]}
+  image="/prakosoee.webp"
+  imageAlt={`Studi kasus ${project.title} oleh Muhammad Elang Prakoso`}
 >
   <div class="project-detail-page">
     <div class="container">

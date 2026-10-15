@@ -1,0 +1,6 @@
+# robots.txt for Muhammad Elang Prakoso Portfolio
+User-agent: *
+Allow: /
+
+# Host & Sitemap
+Sitemap: https://elangprakoso.my.id/sitemap.xml

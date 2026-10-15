@@ -8,15 +8,159 @@ interface Props {
   title: string;
   description?: string;
   currentPath?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: "website" | "article";
+  keywords?: string[];
+  jsonLd?: Record<string, any> | Array<Record<string, any>>;
 }
 
 const {
   title,
   description = "Portfolio profesional Muhammad Elang Prakoso, Software Engineer yang berfokus pada arsitektur sistem web, keandalan basis data, dan rekayasa data/AI.",
   currentPath = "/",
+  image = "/prakosoee.webp",
+  imageAlt = "Muhammad Elang Prakoso - Software Engineer & Full-Stack Developer",
+  type = "website",
+  keywords = [
+    "Muhammad Elang Prakoso",
+    "Software Engineer",
+    "Full-Stack Developer",
+    "Backend Developer",
+    "Database Architect",
+    "Laravel",
+    "PostgreSQL",
+    "FastAPI",
+    "Python",
+    "Astro",
+    "Portfolio Developer Indonesia",
+  ],
+  jsonLd,
 } = Astro.props;
 
+const siteUrl = Astro.site
+  ? Astro.site.toString().replace(/\/$/, "")
+  : "https://elangprakoso.my.id";
+
 const pageTitle = `${title} | Muhammad Elang Prakoso`;
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageURL = new URL(image, siteUrl).toString();
+const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
+
+// Base Schema.org structured data
+const basePersonSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Muhammad Elang Prakoso",
+  alternateName: ["Elang Prakoso", "prakosoee"],
+  jobTitle: "Software Engineer & Full-Stack Developer",
+  url: siteUrl,
+  image: new URL("/prakosoee.webp", siteUrl).toString(),
+  sameAs: [
+    "https://github.com/elangprakoso",
+    "https://linkedin.com/in/elangprakoso",
+  ],
+  knowsAbout: [
+    "Software Engineering",
+    "Full-Stack Development",
+    "Backend Architecture",
+    "PostgreSQL",
+    "Laravel",
+    "Node.js",
+    "Python",
+    "FastAPI",
+    "Astro",
+    "Machine Learning",
+    "RESTful API",
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "ID",
+  },
+};
+
+const defaultSchemas: any[] = [];
+
+if (type === "website" || currentPath === "/") {
+  defaultSchemas.push(
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Muhammad Elang Prakoso - Portfolio",
+      url: siteUrl,
+      description: description,
+      inLanguage: "id",
+      author: {
+        "@type": "Person",
+        name: "Muhammad Elang Prakoso",
+      },
+    },
+    basePersonSchema,
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      mainEntity: {
+        "@type": "Person",
+        name: "Muhammad Elang Prakoso",
+      },
+    }
+  );
+} else {
+  // Article / Case Study Page
+  defaultSchemas.push(
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Beranda",
+          item: `${siteUrl}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Studi Kasus Proyek",
+          item: `${siteUrl}/#projects`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: title,
+          item: canonicalURL,
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      headline: title,
+      description: description,
+      image: ogImageURL,
+      url: canonicalURL,
+      inLanguage: "id",
+      author: {
+        "@type": "Person",
+        name: "Muhammad Elang Prakoso",
+        url: siteUrl,
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Muhammad Elang Prakoso",
+      },
+      mainEntityOfPage: canonicalURL,
+    }
+  );
+}
+
+if (jsonLd) {
+  if (Array.isArray(jsonLd)) {
+    defaultSchemas.push(...jsonLd);
+  } else {
+    defaultSchemas.push(jsonLd);
+  }
+}
 ---
 
 <!doctype html>
@@ -26,11 +170,50 @@ const pageTitle = `${title} | Muhammad Elang Prakoso`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
     <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
     <meta name="description" content={description} />
+    <meta name="author" content="Muhammad Elang Prakoso" />
+    <meta name="keywords" content={keywordsString} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#090d16" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:site_name" content="Muhammad Elang Prakoso - Portfolio" />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <!-- Structured Data (JSON-LD) -->
+    {
+      defaultSchemas.map((schemaItem) => (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(schemaItem)}
+        />
+      ))
+    }
 
     <!-- Google Fonts: Plus Jakarta Sans, IBM Plex Sans and IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
